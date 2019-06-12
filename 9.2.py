@@ -25,15 +25,19 @@ def FindEulerianCycle(adj_list, circuit_max, start, curr_vrtx, path):
     stack = []
     circuit = []    
     while len(circuit) != circuit_max:
+        try:
+            if red_adj_list[curr_vrtx] != []:
+                stack.append(curr_vrtx)
+                pick = randint(0,len(red_adj_list[curr_vrtx])-1)
+                temp = deepcopy(curr_vrtx)
+                curr_vrtx = red_adj_list[temp][pick]
+                red_adj_list[temp].remove(curr_vrtx)
         
-        if red_adj_list[curr_vrtx] != []:
-            stack.append(curr_vrtx)
-            pick = randint(0,len(red_adj_list[curr_vrtx])-1)
-            temp = deepcopy(curr_vrtx)
-            curr_vrtx = red_adj_list[temp][pick]
-            red_adj_list[temp].remove(curr_vrtx)
-        
-        else:
+            else:
+                circuit.append(curr_vrtx)
+                curr_vrtx = stack[len(stack)-1]
+                stack.pop()
+        except KeyError:
             circuit.append(curr_vrtx)
             curr_vrtx = stack[len(stack)-1]
             stack.pop()
